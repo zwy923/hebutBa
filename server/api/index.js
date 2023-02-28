@@ -10,7 +10,10 @@ const validateToken = require("../auth/validateToken.js")
 const { check, validationResult } = require('express-validator')
 process.env.SECRET = 'mysecretkey';
 
-
+router.get('/', function(req, res, next) {
+    res.send('There are some useful api.');
+});
+  
 router.post('/topic',validateToken,async (req, res) => {
     console.log(req.user)
       try {
@@ -59,3 +62,5 @@ router.post('/book', (req, res) => {
       }
     });
   });
+
+module.exports = router;
