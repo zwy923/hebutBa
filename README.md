@@ -11,7 +11,7 @@ topic
 - [ ] Create a comment model with Mongoose that includes fields such as the text of the comment and the user who created it.
 - [ ] Create routes to handle comment creation, editing, deletion, and retrieval.
 - [ ] Implement pagination to handle large numbers of code snippets or comments.
-- [ ] Use a front-end framework such as React to create the user interface. You can use a library like Materialize or Bootstrap to make the design responsive and mobile-friendly.
+- [ ] Use a front-end framework such as React to create the user interface.
 - [ ] Use a code highlighting library like Highlight.js to format code snippets on the front-end.
 - [ ] Use Passport.js to implement social login with Facebook, Google, or Twitter accounts.
 - [ ] Create an admin account with special privileges to edit and delete content.
