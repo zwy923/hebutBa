@@ -3,9 +3,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var apiRouter = require('/api/index')
+var userRouter = require('api/user')
 
 const mongoose = require("mongoose")
 const mongoDB = "mongodb://localhost:27017/testdb"
@@ -17,6 +22,28 @@ db.on("error",console.error.bind(console,"MongoDB connection error."))
 
 var app = express();
 
+
+process.env.SECRET = 'mysecretkey';
+
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET
+};
+
+passport.use(
+    new JwtStrategy(opts, (jwt_payload, done) => {
+      User.findById(jwt_payload.sub, (err, user) => {
+        if (err) {
+          return done(err, false);
+        }
+        if (user) {
+          return done(null, user);
+        } else {
+          return done(null, false);
+        }
+      });
+    })
+);
 
 
 /**这个cors顺序很重要 */
@@ -42,9 +69,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-
+qpp.use('/api',apiRouter)
+app.use('/api/user',userRouter)
 
 
 module.exports = app;
