@@ -2,7 +2,7 @@
 fourm of hebut
 
 
--[x]Set up the project structure with the necessary folders and files.
+- [x] Set up the project structure with the necessary folders and files.
 
 [x]Create a user model with Mongoose that includes fields such as username, email, password, and any other relevant user data.
 user
