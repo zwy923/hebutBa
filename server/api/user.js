@@ -141,17 +141,6 @@ router.get('/codeSnippets', (req, res) => {
 });
 
 
-router.get('/codesnippets', async (req, res) => {
-  try {
-    const snippets = await CodeSnippet.find();
-    res.json(snippets);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
-  }
-});
-
-
 // handdle comment
 router.post('/comments', validateToken, (req, res) => {
   const { text, codeSnippetId } = req.body;
