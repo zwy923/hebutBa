@@ -28,7 +28,7 @@ const LoginForm = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        // handle successful login
+        console.log("ok")
       } else {
         setError(data.error);
       }
@@ -43,11 +43,11 @@ const LoginForm = () => {
       {error && <div>{error}</div>}
       <label>
         Email:
-        <input type="email" value={email} onChange={handleEmailChange} />
+        <input type="email" value={email} onChange={handleEmailChange} required/>
       </label>
       <label>
         Password:
-        <input type="password" value={password} onChange={handlePasswordChange} />
+        <input type="password" value={password} onChange={handlePasswordChange} required/>
       </label>
       <button type="submit">Login</button>
     </form>

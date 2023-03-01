@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-import React from "react";
-import Error from "../components/error";
-import Header from "../components/header";
-import Input from "../components/input";
+import React from "react"
+import Error from "../components/error"
+import Header from "../components/header"
+import Input from "../components/input"
 import Footer from "../components/footer"
-/** 组件名称必须大写啊 */
+import Login from "../components/LoginForm"
+
+
 const Navigation = () =>{
     return(
         <Router>
@@ -12,8 +14,9 @@ const Navigation = () =>{
             <Routes>
                 <Route path="*" element={<Error />} />
                 <Route path="/" element={<Input />} />
+                <Route path='/login' element={<Login />} />
             </Routes>
-            <Footer />
+            <Footer title="*-*" description="code communication"/>
         </Router>
     )
 }
