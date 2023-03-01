@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,15 +13,24 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const theme = createTheme();
 
 const LoginForm = ({onLoginSuccess}) => {
-  
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  //if logged, navigate to /
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -47,8 +56,8 @@ const LoginForm = ({onLoginSuccess}) => {
       const data = await response.json();
       if (response.ok) {
         setError(<Alert severity="success">successfull, logging in...</Alert>)
-        onLoginSuccess()
-        redirect('/')
+        onLoginSuccess(data.token)
+        navigate('/')
       } else {
         setError(<Alert severity="error">{data.error}</Alert>);
       }

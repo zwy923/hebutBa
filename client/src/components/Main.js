@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CodeSnippet from './Card4CodeSnippet';
 
-const Main = ({ onLogout }) => {
+const Main = () => {
   const [codeSnippets, setCodeSnippets] = useState([]);
 
   useEffect(() => {
