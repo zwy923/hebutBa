@@ -19,6 +19,7 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
+//handle login
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email }, (err, user) => {
@@ -37,7 +38,14 @@ router.post('/login', (req, res) => {
   });
 });
 
+//handle logout
+router.post('/logout', (req, res) => {
+  res.clearCookie('jwt'); // Clear the JWT token stored in the cookie
+  res.json({ success: true });
+  /*res.redirect('/');*/
+});
 
+//handle register
 router.post('/register', [
   check('email').isEmail().withMessage('Invalid email format'),
   check('password')
