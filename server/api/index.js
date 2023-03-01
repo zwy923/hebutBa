@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require("mongoose")
 const Book = require('../models/Book');
-const Topic = require('../models/Topic')
 
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
@@ -14,22 +13,7 @@ router.get('/', function(req, res, next) {
     res.send('There are some useful api.');
 });
   
-router.post('/topic',validateToken,async (req, res) => {
-    console.log(req.user)
-      try {
-        let topic = await Topic.findOne({ user: req.user._id });
-        if (!topic) {
-          topic = new Topic({ user: req.user._id, content: req.body.content });
-        } else {
-          topic.content = topic.content.concat(req.body.content);
-        }
-        await topic.save();
-        res.json(topic);
-      } catch (err) {
-        res.status(500).json({ message: 'Error saving topic' });
-      }
-    }
-);
+
 router.get('/book/:bookName', async (req, res) => {
     const { bookName } = req.params;
     try {

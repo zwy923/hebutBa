@@ -72,7 +72,7 @@ router.post('/register', [
 
 
 // Create a new code snippet
-router.post('/codeSnippets', authenticate, (req, res) => {
+router.post('/codeSnippets', validateToken, (req, res) => {
   const { title, code, tags } = req.body;
   const user = req.user;
 
@@ -93,7 +93,7 @@ router.post('/codeSnippets', authenticate, (req, res) => {
 });
 
 // Edit an existing code snippet
-router.put('/codeSnippets/:id', authenticate, (req, res) => {
+router.put('/codeSnippets/:id', validateToken, (req, res) => {
   const codeSnippetId = req.params.id;
   const userId = req.user._id;
   const { title, code, tags } = req.body;
@@ -111,7 +111,7 @@ router.put('/codeSnippets/:id', authenticate, (req, res) => {
 
 
 // Delete an existing code snippet
-router.delete('/codeSnippets/:id', authenticate, (req, res) => {
+router.delete('/codeSnippets/:id', validateToken, (req, res) => {
   const codeSnippetId = req.params.id;
   const userId = req.user._id;
 
@@ -159,7 +159,7 @@ router.get('/codeSnippets/:id', (req, res) => {
 
 
 // handdle comment
-router.post('/comments', authenticate, (req, res) => {
+router.post('/comments', validateToken, (req, res) => {
   const { text, codeSnippetId } = req.body;
   const user = req.user;
 
@@ -180,7 +180,7 @@ router.post('/comments', authenticate, (req, res) => {
 
 
 // Edit an existing comment
-router.put('/comments/:id', authenticate, (req, res) => {
+router.put('/comments/:id', validateToken, (req, res) => {
   const commentId = req.params.id;
   const userId = req.user._id;
   const { text } = req.body;
@@ -197,7 +197,7 @@ router.put('/comments/:id', authenticate, (req, res) => {
 });
 
 // Delete an existing comment
-router.delete('/comments/:id', authenticate, (req, res) => {
+router.delete('/comments/:id', validateToken, (req, res) => {
   const commentId = req.params.id;
   const userId = req.user._id;
 

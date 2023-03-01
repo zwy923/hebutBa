@@ -9,8 +9,8 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 var indexRouter = require('./routes/index');
-var apiRouter = require('/api/index')
-var userRouter = require('api/user')
+var apiRouter = require('./api/index')
+var userRouter = require('./api/user')
 
 const mongoose = require("mongoose")
 const mongoDB = "mongodb://localhost:27017/testdb"
@@ -69,7 +69,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-qpp.use('/api',apiRouter)
+app.use('/api',apiRouter)
 app.use('/api/user',userRouter)
 
 
