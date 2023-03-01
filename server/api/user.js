@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require("mongoose")
 const User = require('../models/User')
-const Topic = require('../models/Topic')
+const Comment = require('../models/Comment');
+const CodeSnippet = require('../models/CodeSnippet');
 
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
@@ -38,14 +39,14 @@ router.post('/login', (req, res) => {
   });
 });
 
-//handle logout
+// handle logout
 router.post('/logout', (req, res) => {
   res.clearCookie('jwt'); // Clear the JWT token stored in the cookie
   res.json({ success: true });
   /*res.redirect('/');*/
 });
 
-//handle register
+// handle register
 router.post('/register', [
   check('email').isEmail().withMessage('Invalid email format'),
   check('password')
@@ -68,5 +69,148 @@ router.post('/register', [
     res.json({ message: 'User created successfully' });
   });
 });
+
+
+// Create a new code snippet
+router.post('/codeSnippets', authenticate, (req, res) => {
+  const { title, code, tags } = req.body;
+  const user = req.user;
+
+  const codeSnippet = new CodeSnippet({
+    title,
+    code,
+    tags,
+    user: user._id
+  });
+
+  codeSnippet.save((err, codeSnippet) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else {
+      res.json(codeSnippet);
+    }
+  });
+});
+
+// Edit an existing code snippet
+router.put('/codeSnippets/:id', authenticate, (req, res) => {
+  const codeSnippetId = req.params.id;
+  const userId = req.user._id;
+  const { title, code, tags } = req.body;
+
+  CodeSnippet.findOneAndUpdate({ _id: codeSnippetId, user: userId }, { title, code, tags }, { new: true }, (err, codeSnippet) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else if (!codeSnippet) {
+      res.status(404).json({ error: 'Code snippet not found or unauthorized to edit' });
+    } else {
+      res.json(codeSnippet);
+    }
+  });
+});
+
+
+// Delete an existing code snippet
+router.delete('/codeSnippets/:id', authenticate, (req, res) => {
+  const codeSnippetId = req.params.id;
+  const userId = req.user._id;
+
+  CodeSnippet.findOneAndDelete({ _id: codeSnippetId, user: userId }, (err, codeSnippet) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else if (!codeSnippet) {
+      res.status(404).json({ error: 'Code snippet not found or unauthorized to delete' });
+    } else {
+      res.json({ message: 'Code snippet deleted successfully' });
+    }
+  });
+});
+
+
+// Get all code snippets
+router.get('/codeSnippets', (req, res) => {
+  CodeSnippet.find({})
+    .populate('user', 'username')
+    .exec((err, codeSnippets) => {
+      if (err) {
+        res.status(500).json({ error: 'Something went wrong' });
+      } else {
+        res.json(codeSnippets);
+      }
+    });
+});
+
+// Get a specific code snippet by ID
+router.get('/codeSnippets/:id', (req, res) => {
+  const codeSnippetId = req.params.id;
+
+  CodeSnippet.findById(codeSnippetId)
+    .populate('user', 'username')
+    .exec((err, codeSnippet) => {
+      if (err) {
+        res.status(500).json({ error: 'Something went wrong' });
+      } else if (!codeSnippet) {
+        res.status(404).json({ error: 'Code snippet not found' });
+      } else {
+        res.json(codeSnippet);
+      }
+    });
+});
+
+
+// handdle comment
+router.post('/comments', authenticate, (req, res) => {
+  const { text, codeSnippetId } = req.body;
+  const user = req.user;
+
+  const comment = new Comment({
+    text,
+    user: user._id,
+    codeSnippet: codeSnippetId
+  });
+
+  comment.save((err, comment) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else {
+      res.json(comment);
+    }
+  });
+});
+
+
+// Edit an existing comment
+router.put('/comments/:id', authenticate, (req, res) => {
+  const commentId = req.params.id;
+  const userId = req.user._id;
+  const { text } = req.body;
+
+  Comment.findOneAndUpdate({ _id: commentId, user: userId }, { text }, { new: true }, (err, comment) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else if (!comment) {
+      res.status(404).json({ error: 'Comment not found or unauthorized to edit' });
+    } else {
+      res.json(comment);
+    }
+  });
+});
+
+// Delete an existing comment
+router.delete('/comments/:id', authenticate, (req, res) => {
+  const commentId = req.params.id;
+  const userId = req.user._id;
+
+  Comment.findOneAndDelete({ _id: commentId, user: userId }, (err, comment) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else if (!comment) {
+      res.status(404).json({ error: 'Comment not found or unauthorized to delete' });
+    } else {
+      res.json({ message: 'Comment deleted successfully' });
+    }
+  });
+});
+
 
 module.exports = router;
