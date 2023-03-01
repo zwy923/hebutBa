@@ -7,11 +7,11 @@ fourm of hebut
 - user
 - topic
 - [x] Create routes to handle user registration, login, and logout. You can use Passport.js to handle authentication.
-- [ ] Create a code snippet model with Mongoose that includes fields such as title, code, tags, and the user who created it.
-- [ ] Create a comment model with Mongoose that includes fields such as the text of the comment and the user who created it.
-- [ ] Create routes to handle comment creation, editing, deletion, and retrieval.
+- [x] Create a code snippet model with Mongoose that includes fields such as title, code, tags, and the user who created it.
+- [x] Create a comment model with Mongoose that includes fields such as the text of the comment and the user who created it.
+- [x] Create routes to handle comment creation, editing, deletion, and retrieval.
 - [ ] Implement pagination to handle large numbers of code snippets or comments.
-- [ ] Use a front-end framework such as React to create the user interface.
+- [x] Use a front-end framework such as React to create the user interface.
 - [ ] Use a code highlighting library like Highlight.js to format code snippets on the front-end.
 - [ ] Use Passport.js to implement social login with Facebook, Google, or Twitter accounts.
 - [ ] Create an admin account with special privileges to edit and delete content.
