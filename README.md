@@ -1,5 +1,6 @@
 # HEBUTba
-fourm of hebut
+
+forum of hebut
 
 
 - [x] Set up the project structure with the necessary folders and files.
