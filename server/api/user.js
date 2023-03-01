@@ -58,8 +58,8 @@ router.post('/register', [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { email, password } = req.body;
-  const user = new User({ email, password });
+  const { email, password, name} = req.body;
+  const user = new User({ email, password, name});
   user.save((err) => {
     if (err) {
         if(err.code === 11000) return res.status(403).json({error: 'email already exists'});
@@ -140,21 +140,15 @@ router.get('/codeSnippets', (req, res) => {
     });
 });
 
-// Get a specific code snippet by ID
-router.get('/codeSnippets/:id', (req, res) => {
-  const codeSnippetId = req.params.id;
 
-  CodeSnippet.findById(codeSnippetId)
-    .populate('user', 'username')
-    .exec((err, codeSnippet) => {
-      if (err) {
-        res.status(500).json({ error: 'Something went wrong' });
-      } else if (!codeSnippet) {
-        res.status(404).json({ error: 'Code snippet not found' });
-      } else {
-        res.json(codeSnippet);
-      }
-    });
+router.get('/codesnippets', async (req, res) => {
+  try {
+    const snippets = await CodeSnippet.find();
+    res.json(snippets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
 
