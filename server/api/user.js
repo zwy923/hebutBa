@@ -128,7 +128,6 @@ router.delete('/codeSnippets/:id', validateToken, (req, res) => {
 
 
 // Get all code snippets
-
 router.get('/codesnippets', async (req, res) => {
   try {
     const snippets = await CodeSnippet.find();
