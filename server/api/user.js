@@ -128,16 +128,15 @@ router.delete('/codeSnippets/:id', validateToken, (req, res) => {
 
 
 // Get all code snippets
-router.get('/codeSnippets', (req, res) => {
-  CodeSnippet.find({})
-    .populate('user', 'username')
-    .exec((err, codeSnippets) => {
-      if (err) {
-        res.status(500).json({ error: 'Something went wrong' });
-      } else {
-        res.json(codeSnippets);
-      }
-    });
+
+router.get('/codesnippets', async (req, res) => {
+  try {
+    const snippets = await CodeSnippet.find();
+    res.json(snippets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
 
