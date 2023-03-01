@@ -31,7 +31,7 @@ router.post('/login', (req, res) => {
       if (!isMatch) return res.status(401).json({ error: 'email or password is incorrect' });
       const payload = { _id:user._id,email: user.email };
       const token = jwt.sign(payload, process.env.SECRET,{
-        expiresIn: 2000
+        expiresIn: 7200 //7200s expired
       });
       res.json({ "success":"true", "token":token});
     });

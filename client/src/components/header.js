@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,6 +14,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LoginIcon from '@mui/icons-material/Login';
+import { useNavigate } from 'react-router-dom';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,12 +59,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+export default function Header({ isLoggedIn, onLogout }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const navigate = useNavigate();
+
+  const onLogin = () =>{
+    navigate('/login')
+  }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -174,13 +184,27 @@ export default function Header() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          {isLoggedIn ?(
+            <IconButton size="large"  color="inherit" onClick={onLogout}>
+              <Badge badgeContent={0} color="error">
+                <ExitToAppIcon />
+              </Badge>
+            </IconButton>
+          ) : (
+            <></>
+          )
+          }
+          {isLoggedIn ?(
+            <IconButton size="large"  color="inherit">
               <Badge badgeContent={0} color="error">
                 <MailIcon />
               </Badge>
             </IconButton>
-            
+          ) : (
+            <></>
+          )
+          }
+          {isLoggedIn ?(
             <IconButton
               size="large"
               edge="end"
@@ -192,7 +216,13 @@ export default function Header() {
             >
               <AccountCircle />
             </IconButton>
-
+          ) : (
+            <IconButton size="large"  color="inherit" onClick={onLogin}>
+              <Badge badgeContent={0} color="error">
+                <LoginIcon />
+              </Badge>
+            </IconButton>
+          )}
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
