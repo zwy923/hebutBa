@@ -84,6 +84,7 @@ router.post('/codeSnippets', validateToken, (req, res) => {
 
   codeSnippet.save((err, codeSnippet) => {
     if (err) {
+      console.log(err)
       res.status(500).json({ error: 'Something went wrong' });
     } else {
       res.json(codeSnippet);
