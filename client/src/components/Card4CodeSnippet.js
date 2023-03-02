@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -12,6 +12,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const ExpandMore = styled((props) => {
@@ -25,10 +29,55 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CodeSnippet = ({ snippet }) => {
+const CodeSnippet = ({ isLoggedIn,snippet }) => {
+  const { title, code, tags, createdBy, createdAt, updatedAt, user} = snippet;
 
-  const { title, code, tags, createdBy, createdAt, updatedAt, id} = snippet;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const [userName, setUserName] = useState('');
 
+  const options = [
+    'Edit',
+    'Delete'
+  ];
+  
+  const ITEM_HEIGHT = 48;
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    setAnchorEl(null);
+  };
+  
+  const handleDelete = () => {
+    setAnchorEl(null);
+  }
+
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const response = await fetch(`http://localhost:1234/api/user/getusername`,{
+        method:'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user
+        })});
+      const data = await response.json();
+      setUserName(data.name);
+    };
+    if (user) {
+      fetchUserName();
+    }
+  }, [user]);
+  
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -39,12 +88,45 @@ const CodeSnippet = ({ snippet }) => {
     <Card sx={{ maxWidth: 345 ,margin : 10}}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <div>
+            {isLoggedIn ?(
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? 'long-menu' : undefined}
+              aria-expanded={open ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            ):(<></>)}
+            <Menu
+              id="long-menu"
+              MenuListProps={{
+                'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                style: {maxHeight: ITEM_HEIGHT * 4.5,
+                width: '6.8ch',},}}>
+
+          <MenuItem key={'Edit'} onClick={handleEdit} >
+            <EditIcon />
+          </MenuItem>
+
+          <MenuItem key={'Delete'} onClick={handleDelete} >
+            <DeleteIcon />
+          </MenuItem>
+
+      </Menu>
+    </div>
+          
         }
         title={title}
-        subheader={createdBy}
+        subheader={userName}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">

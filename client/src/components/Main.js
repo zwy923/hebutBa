@@ -3,7 +3,8 @@ import CodeSnippet from './Card4CodeSnippet';
 
 const Main = () => {
   const [codeSnippets, setCodeSnippets] = useState([]);
-
+  const [token, setToken] = useState(localStorage.getItem('authToken'));
+  
   useEffect(() => {
     const fetchCodeSnippets = async () => {
       try {
@@ -21,7 +22,7 @@ const Main = () => {
     <>
       <div>
         {codeSnippets.map((snippet) => (
-          <CodeSnippet key={snippet._id} snippet={snippet} />
+          <CodeSnippet key={snippet._id} isLoggedIn={token !== null} snippet={snippet} />
         ))}
       </div>
     </>

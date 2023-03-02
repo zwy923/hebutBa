@@ -4,6 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
 
+import SendIcon from '@mui/icons-material/Send';
+
+
 const CreateSnippet = () => {
 
   const [title, setTitle] = useState('');
@@ -88,8 +91,8 @@ const CreateSnippet = () => {
           margin="normal"
         />
 
-        <Button type="submit" variant="contained" color="primary">
-          Create Snippet
+        <Button variant="contained" margin='20' endIcon={<SendIcon />}>
+          Create
         </Button>
       </form>
     </Box>

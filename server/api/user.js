@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
     user.comparePassword(password, (err, isMatch) => {
       if (err) return res.status(500).json({ error: 'something went wrong' });
       if (!isMatch) return res.status(401).json({ error: 'email or password is incorrect' });
-      const payload = { _id:user._id,email: user.email };
+      const payload = { _id:user._id, email: user.email, name:user.name};
       const token = jwt.sign(payload, process.env.SECRET,{
         expiresIn: 7200 //7200s expired
       });
@@ -37,6 +37,15 @@ router.post('/login', (req, res) => {
     });
   });
 });
+
+router.post('/getusername',(req, res)=>{
+  const id  = req.body.userid
+  User.findOne({id},(err,user)=>{
+    if (err) return res.status(500).json({ error: 'something went wrong' });
+    if (!user) return res.status(404).json({ error: 'user not found' });
+    res.json({name:user.name})
+  })
+})
 
 // handle logout
 router.post('/logout', (req, res) => {
