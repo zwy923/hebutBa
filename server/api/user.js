@@ -107,7 +107,7 @@ router.put('/codeSnippets/:id', validateToken, (req, res) => {
   const userId = req.user._id;
   const { title, code, tags } = req.body;
 
-  CodeSnippet.findOneAndUpdate({ _id: codeSnippetId, user: userId }, { title, code, tags }, { new: true }, (err, codeSnippet) => {
+  CodeSnippet.findOneAndUpdate({ _id: codeSnippetId, user: userId }, { title, code, tags, updatedAt: Date.now() }, { new: true }, (err, codeSnippet) => {
     if (err) {
       res.status(500).json({ error: 'Something went wrong' });
     } else if (!codeSnippet) {
