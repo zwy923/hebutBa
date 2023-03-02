@@ -81,13 +81,14 @@ router.post('/register', [
 
 // Create a new code snippet
 router.post('/codeSnippets', validateToken, (req, res) => {
-  const { title, code, tags } = req.body;
+  const { title, code, tags, description} = req.body;
   const user = req.user;
 
   const codeSnippet = new CodeSnippet({
     title,
     code,
     tags,
+    description,
     user: user._id
   });
 
@@ -105,9 +106,9 @@ router.post('/codeSnippets', validateToken, (req, res) => {
 router.put('/codeSnippets/:id', validateToken, (req, res) => {
   const codeSnippetId = req.params.id;
   const userId = req.user._id;
-  const { title, code, tags } = req.body;
+  const { title, code, tags, description} = req.body;
 
-  CodeSnippet.findOneAndUpdate({ _id: codeSnippetId, user: userId }, { title, code, tags, updatedAt: Date.now() }, { new: true }, (err, codeSnippet) => {
+  CodeSnippet.findOneAndUpdate({ _id: codeSnippetId, user: userId }, { title, code, description, tags, updatedAt: Date.now() }, { new: true }, (err, codeSnippet) => {
     if (err) {
       res.status(500).json({ error: 'Something went wrong' });
     } else if (!codeSnippet) {

@@ -14,6 +14,11 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'CodeSnippet',
     required: true
+  },
+  vote:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vote',
+    required: true
   }
 }, { timestamps: true });
 

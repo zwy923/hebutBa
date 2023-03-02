@@ -5,7 +5,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
-
+import { Checkbox } from '@mui/material';
 
 const CreateSnippet = ({token}) => {
 
@@ -14,10 +14,15 @@ const CreateSnippet = ({token}) => {
   const [title, setTitle] = useState('');
   const [code, setCode] = useState('');
   const [tags, setTags] = useState('');
-
+  const [description, setDescription] = useState('')
+  
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  }
 
   const handleCodeChange = (event) => {
     setCode(event.target.value);
@@ -27,6 +32,8 @@ const CreateSnippet = ({token}) => {
     setTags(event.target.value);
   };
 
+  const label = { inputProps: { 'yes': 'no' } };
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -40,6 +47,7 @@ const CreateSnippet = ({token}) => {
           title,
           code,
           tags,
+          description
         })
       })
       const data = await response.json();
@@ -63,11 +71,29 @@ const CreateSnippet = ({token}) => {
         <TextField
           id="title"
           label="Title"
-          fullWidth
           value={title}
           onChange={handleTitleChange}
           margin="normal"
         />
+
+        <TextField
+          id="tags"
+          label="Tags"
+          value={tags}
+          onChange={handleTagsChange}
+          margin="normal"
+        />
+        <br />
+        <TextField
+          id="description"
+          fullWidth
+          rows={5}
+          label="Description"
+          value={description}
+          onChange={handleDescriptionChange}
+          margin="normal"
+        />
+        <br />
         <TextField
           id="code"
           label="Markdown"
@@ -78,21 +104,22 @@ const CreateSnippet = ({token}) => {
           onChange={handleCodeChange}
           margin="normal"
         />
-
+        <Box  margin="normal" border={1} height={200}>
         <Typography variant="subtitle1" component="div">
-          Preview:
+          Preview
         </Typography>
-
-        <ReactMarkdown
+        
+        <ReactMarkdown sx={{ textAlign: 'left' }}
           className="markdown-preview"
           children={code}
           components={{
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
-                <Box component="pre" className={`hljs ${className}`}>
+                <Box component="pre"  className={`hljs ${className}`} sx={{ textAlign: 'left' }}>
                   <code
                     className={`hljs ${className}`}
+                    sx={{ textAlign: 'left' }}
                     {...props}
                     dangerouslySetInnerHTML={{
                       __html: hljs.highlightAuto(children, [match[1]]).value,
@@ -100,26 +127,19 @@ const CreateSnippet = ({token}) => {
                   />
                 </Box>
               ) : (
-                <code className={className} {...props}>
+                <code className={className}  {...props} sx={{ textAlign: 'left' }}>
                   {children}
                 </code>
               );
             },
           }}
         />
+        </Box>
 
-        <TextField
-          id="tags"
-          label="Tags"
-          fullWidth
-          value={tags}
-          onChange={handleTagsChange}
-          margin="normal"
-        />
-
-        <Button variant="contained" margin='20' endIcon={<SendIcon />} onClick={handleSubmit}>
+        <Button variant="contained" sx={{margin:2}} endIcon={<SendIcon />} onClick={handleSubmit}>
           Create
-        </Button>
+        </Button>Anonymous
+        <Checkbox {...label} defaultChecked />    
       </form>
     </Paper>
   );
