@@ -61,10 +61,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header({ isLoggedIn, onLogout }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorE2, setAnchorE2] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
+  const isProfileMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isMenuOpen = Boolean(anchorE2)
 
   const navigate = useNavigate();
 
@@ -76,12 +78,21 @@ export default function Header({ isLoggedIn, onLogout }) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleMenuOpen = (event) => {
+    setAnchorE2(event.currentTarget)
+  }
+
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  const handleProfileMenuClose = () => {
     setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMenuClose = () => {
+    setAnchorE2(null);
     handleMobileMenuClose();
   };
 
@@ -92,9 +103,13 @@ export default function Header({ isLoggedIn, onLogout }) {
   const onAdd = () =>{
     navigate('/createsnippet')
   }
+  const gohome = ()=>{
+    navigate("/")
+    setAnchorE2(null);
+  }
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
+  const renderProfileMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
@@ -107,11 +122,31 @@ export default function Header({ isLoggedIn, onLogout }) {
         vertical: 'top',
         horizontal: 'right',
       }}
+      open={isProfileMenuOpen}
+      onClose={handleProfileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
+    </Menu>
+  );
+    
+  const rendereMenu = (
+    <Menu
+      anchorE2={anchorE2}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={gohome}>Home</MenuItem>
+      
     </Menu>
   );
 
@@ -160,6 +195,7 @@ export default function Header({ isLoggedIn, onLogout }) {
       <AppBar position="static">
         <Toolbar>
           <IconButton
+            onClick={handleMenuOpen}
             size="large"
             edge="start"
             color="inherit"
@@ -168,6 +204,7 @@ export default function Header({ isLoggedIn, onLogout }) {
           >
             <MenuIcon />
           </IconButton>
+          {rendereMenu}
           <Typography
             variant="h6"
             noWrap
@@ -242,7 +279,7 @@ export default function Header({ isLoggedIn, onLogout }) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {renderProfileMenu}
     </Box>
   );
 }
