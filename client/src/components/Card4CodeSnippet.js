@@ -36,10 +36,6 @@ const CodeSnippet = ({ isLoggedIn,snippet }) => {
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
 
-  const options = [
-    'Edit',
-    'Delete'
-  ];
   
   const ITEM_HEIGHT = 48;
   
@@ -120,11 +116,8 @@ const CodeSnippet = ({ isLoggedIn,snippet }) => {
           <MenuItem key={'Delete'} onClick={handleDelete} >
             <DeleteIcon />
           </MenuItem>
-
       </Menu>
-    </div>
-          
-        }
+    </div>}
         title={title}
         subheader={userName}
       />
