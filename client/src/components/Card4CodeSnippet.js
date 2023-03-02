@@ -18,7 +18,7 @@ const CodeSnippet = ({ snippet }) => {
   const { title, code, tags, createdBy, createdAt, updatedAt, id} = snippet;
 
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }}>
+    <Card variant="outlined" sx={{ minWidth: 120 }}>
     <CardContent>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
         {title}

@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
+import AddIcon from '@mui/icons-material/Add';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoginIcon from '@mui/icons-material/Login';
@@ -88,6 +88,10 @@ export default function Header({ isLoggedIn, onLogout }) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const onAdd = () =>{
+    navigate('/createsnippet')
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -194,9 +198,9 @@ export default function Header({ isLoggedIn, onLogout }) {
           )
           }
           {isLoggedIn ?(
-            <IconButton size="large"  color="inherit">
+            <IconButton size="large"  color="inherit" onClick={onAdd}>
               <Badge badgeContent={0} color="error">
-                <MailIcon />
+                <AddIcon />
               </Badge>
             </IconButton>
           ) : (

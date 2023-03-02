@@ -6,10 +6,21 @@ import Login from '../components/LoginForm';
 import Register from '../components/RegisterForm';
 import Footer from '../components/footer';
 import Error from '../components/error'
-
+import jwtDecode from 'jwt-decode';
+import CreateSnippet from '../components/CreateSnippet';
 const Navigation = () => {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
 
+  if(token){
+    const decodedToken = jwtDecode(token);
+    if (decodedToken.exp < Date.now() / 1000) {
+      localStorage.removeItem('authToken')
+    } else {
+      // token is still valid
+    }
+  }
+  
+  
   // If a local token is detected
   useEffect(() => {
     const localToken = localStorage.getItem('authToken');
@@ -34,6 +45,7 @@ const Navigation = () => {
       <Routes>
         <Route path="*" element={<Error />} />
         <Route path="/" element={<Main  />} />
+        <Route path='createsnippet' element={<CreateSnippet />} />
         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={<Register />} />
       </Routes>

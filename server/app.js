@@ -48,7 +48,7 @@ passport.use(
 
 /**这个cors顺序很重要 */
 
-// SET NODE_ENV=production& npm run dev:server
+// SET NODE_ENV=development& npm run dev:server
 if(process.env.NODE_ENV ==="development"){
     var corsOptions = {
         origin: "http://localhost:3000",
