@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-
+import ReactMarkdown from 'react-markdown';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/vs2015.css';
 
 const CreateSnippet = () => {
 
@@ -26,7 +28,7 @@ const CreateSnippet = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ border: 1 , boxShadow: 1, margin: 4}}>
       <Typography variant="h4">Create New Snippet</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -47,6 +49,36 @@ const CreateSnippet = () => {
           onChange={handleCodeChange}
           margin="normal"
         />
+
+        <Typography variant="subtitle1" component="div">
+          Preview:
+        </Typography>
+
+        <ReactMarkdown
+          className="markdown-preview"
+          children={code}
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || '');
+              return !inline && match ? (
+                <Box component="pre" className={`hljs ${className}`}>
+                  <code
+                    className={`hljs ${className}`}
+                    {...props}
+                    dangerouslySetInnerHTML={{
+                      __html: hljs.highlightAuto(children, [match[1]]).value,
+                    }}
+                  />
+                </Box>
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        />
+
         <TextField
           id="tags"
           label="Tags"
@@ -55,7 +87,7 @@ const CreateSnippet = () => {
           onChange={handleTagsChange}
           margin="normal"
         />
-        
+
         <Button type="submit" variant="contained" color="primary">
           Create Snippet
         </Button>
