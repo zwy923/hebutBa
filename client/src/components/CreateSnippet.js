@@ -31,7 +31,7 @@ const CreateSnippet = () => {
   };
 
   return (
-    <Paper sx={{ border: 1 , margin: 4}}>
+    <Paper variant="elevation" elevation='5' sx={{ margin: 4}}>
       <Typography variant="h4">Create New Snippet</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -44,7 +44,7 @@ const CreateSnippet = () => {
         />
         <TextField
           id="code"
-          label="Code"
+          label="Markdown"
           fullWidth
           multiline
           rows={10}
