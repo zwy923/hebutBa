@@ -1,30 +1,29 @@
-import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AddIcon from '@mui/icons-material/Add';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoginIcon from '@mui/icons-material/Login';
-import { useNavigate } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import SearchIcon from '@mui/icons-material/Search';
+import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
-import { createTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { alpha, createTheme, styled } from '@mui/material/styles';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -91,15 +90,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Header({ isLoggedIn, onLogout }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorE2, setAnchorE2] = React.useState(null);
+  const [anchor1, setAnchor1] = React.useState(null);
+  const [anchor2, setAnchor2] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
 
 
-  const isProfileMenuOpen = Boolean(anchorEl);
+  const isProfileMenuOpen = Boolean(anchor1);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isMenuOpen = Boolean(anchorE2)
+  const isMenuOpen = Boolean(anchor2)
 
   const navigate = useNavigate();
 
@@ -108,8 +107,12 @@ export default function Header({ isLoggedIn, onLogout }) {
   }
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchor1(event.currentTarget);
   };
+
+  const handleMenuOpen = (event) => {
+    setAnchor2(event.currentTarget)
+  }
 
   const handleClickOpen = () => {//if exit
     setOpen(true);
@@ -119,22 +122,16 @@ export default function Header({ isLoggedIn, onLogout }) {
     setOpen(false);
   };
 
-  const handleMenuOpen = (event) => {
-    setAnchorE2(event.currentTarget)
-  }
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
   const handleProfileMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+    setAnchor1(null);
   };
 
   const handleMenuClose = () => {
-    setAnchorE2(null);
-    handleMobileMenuClose();
+    setAnchor2(null);
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -144,15 +141,16 @@ export default function Header({ isLoggedIn, onLogout }) {
   const onAdd = () =>{
     navigate('/createsnippet')
   }
+
   const gohome = ()=>{
     navigate("/")
-    setAnchorE2(null);
+    setAnchor2(null);
   }
 
   const menuId = 'primary-search-account-menu';
   const renderProfileMenu = (
     <Menu theme={theme}
-      anchorEl={anchorEl}
+      anchorEl={anchor1}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'right',
@@ -173,7 +171,7 @@ export default function Header({ isLoggedIn, onLogout }) {
     
   const rendereMenu = (
     <Menu theme={theme}
-      anchorE2={anchorE2}
+      anchorEl={anchor2}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'left',

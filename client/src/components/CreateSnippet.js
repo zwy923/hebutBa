@@ -3,11 +3,13 @@ import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
-
+import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 
 
 const CreateSnippet = () => {
+
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [code, setCode] = useState('');
@@ -25,13 +27,35 @@ const CreateSnippet = () => {
     setTags(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // TODO: handle form submission
+    try {
+      const response = await fetch('http://localhost:1234/api/user/codeSnippets',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title,
+          code,
+          tags,
+        })
+      })
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data)
+        navigate('/')
+        window.location.reload()
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
-    <Paper variant="elevation" elevation='5' sx={{ margin: 4}}>
+    <Paper variant="elevation" sx={{ margin: 4}}>
       <Typography variant="h4">Create New Snippet</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -91,7 +115,7 @@ const CreateSnippet = () => {
           margin="normal"
         />
 
-        <Button variant="contained" margin='20' endIcon={<SendIcon />}>
+        <Button variant="contained" margin='20' endIcon={<SendIcon />} onClick={handleSubmit}>
           Create
         </Button>
       </form>
