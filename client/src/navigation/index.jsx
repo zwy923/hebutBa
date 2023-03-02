@@ -46,7 +46,7 @@ const Navigation = () => {
       <Routes>
         <Route path="*" element={<Error />} />
         <Route path="/" element={<Main  />} />
-        <Route path='createsnippet' element={<CreateSnippet />} />
+        <Route path='createsnippet' element={<CreateSnippet token={token} isLoggedIn={token !== null} />} />
         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={<Register />} />
       </Routes>

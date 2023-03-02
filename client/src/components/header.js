@@ -24,6 +24,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
+import { createTheme } from '@mui/material/styles';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -64,6 +66,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#242d49',
+      main: '#0c1949',
+      dark: '#0c1949',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+  },
+});
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -130,7 +151,7 @@ export default function Header({ isLoggedIn, onLogout }) {
 
   const menuId = 'primary-search-account-menu';
   const renderProfileMenu = (
-    <Menu
+    <Menu theme={theme}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
@@ -151,7 +172,7 @@ export default function Header({ isLoggedIn, onLogout }) {
   );
     
   const rendereMenu = (
-    <Menu
+    <Menu theme={theme}
       anchorE2={anchorE2}
       anchorOrigin={{
         vertical: 'top',
@@ -172,7 +193,7 @@ export default function Header({ isLoggedIn, onLogout }) {
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
-    <Menu
+    <Menu theme={theme}
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: 'top',
@@ -212,7 +233,7 @@ export default function Header({ isLoggedIn, onLogout }) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" theme={theme}>
         <Toolbar>
           <IconButton
             onClick={handleMenuOpen}
