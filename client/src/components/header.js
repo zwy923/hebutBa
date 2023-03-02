@@ -71,9 +71,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#242d49',
-      main: '#0c1949',
-      dark: '#0c1949',
+      light: '#222226',
+      main: '#222226',
+      dark: '#222226',
       contrastText: '#fff',
     },
     secondary: {
