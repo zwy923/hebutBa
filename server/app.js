@@ -52,7 +52,7 @@ passport.use(
 if(process.env.NODE_ENV ==="development"){
     var corsOptions = {
         origin: "http://localhost:3000",
-        methods: ["POST"],
+        methods: ["POST","DELETE","PUT","GET"],
         credentials: true,
         optionsSuccessStatus:200,
     };

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 
 
-const CreateSnippet = () => {
+const CreateSnippet = ({token}) => {
 
   const navigate = useNavigate();
 
@@ -33,7 +33,8 @@ const CreateSnippet = () => {
       const response = await fetch('http://localhost:1234/api/user/codeSnippets',{
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
         },
         body: JSON.stringify({
           title,
@@ -44,6 +45,7 @@ const CreateSnippet = () => {
       const data = await response.json();
       if (response.ok) {
         console.log(data)
+        alert("Successful!")
         navigate('/')
         window.location.reload()
       } else {

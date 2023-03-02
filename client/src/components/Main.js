@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CodeSnippet from './Card4CodeSnippet';
 
-const Main = () => {
+const Main = ({token}) => {
   const [codeSnippets, setCodeSnippets] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem('authToken'));
   
   useEffect(() => {
     const fetchCodeSnippets = async () => {
@@ -22,7 +21,7 @@ const Main = () => {
     <>
       <div>
         {codeSnippets.map((snippet) => (
-          <CodeSnippet key={snippet._id} isLoggedIn={token !== null} snippet={snippet} />
+          <CodeSnippet key={snippet._id} isLoggedIn={token !== null} snippet={snippet} token={token}/>
         ))}
       </div>
     </>

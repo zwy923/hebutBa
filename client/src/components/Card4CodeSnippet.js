@@ -29,14 +29,13 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CodeSnippet = ({ isLoggedIn,snippet }) => {
-  const { title, code, tags, createdBy, createdAt, updatedAt, user} = snippet;
+const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
+  const { title, code, tags, createdBy, createdAt, updatedAt, user, _id} = snippet;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
 
-  
   const ITEM_HEIGHT = 48;
   
   const handleClick = (event) => {
@@ -51,8 +50,30 @@ const CodeSnippet = ({ isLoggedIn,snippet }) => {
     setAnchorEl(null);
   };
   
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setAnchorEl(null);
+    try {
+    const response = await fetch(`http://localhost:1234/api/user/codeSnippets/${_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.ok) {
+      alert('Code snippet deleted successfully.');
+      window.location.reload();
+    } else if (response.status === 401) {
+      alert('You are not authorized to delete this code snippet.');
+    } else if (response.status === 404) {
+      alert('Code snippet not found.');
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+    } catch (error) {
+      alert(`Error deleting code snippet: ${error.message}`);
+    }
   }
 
 
@@ -113,7 +134,7 @@ const CodeSnippet = ({ isLoggedIn,snippet }) => {
             <EditIcon />
           </MenuItem>
 
-          <MenuItem key={'Delete'} onClick={handleDelete} >
+          <MenuItem key={'Delete'} onClick={handleDelete}>
             <DeleteIcon />
           </MenuItem>
       </Menu>
