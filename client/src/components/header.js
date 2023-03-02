@@ -17,7 +17,13 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import Button from '@mui/material/Button';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,10 +65,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function Header({ isLoggedIn, onLogout }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+
 
   const isProfileMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -76,6 +88,14 @@ export default function Header({ isLoggedIn, onLogout }) {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleClickOpen = () => {//if exit
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleMenuOpen = (event) => {
@@ -222,13 +242,34 @@ export default function Header({ isLoggedIn, onLogout }) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+
+          <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+              aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle>{"Sure you want to logout?"}</DialogTitle>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+            If you logout, you will not be able to post something new.
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>NO</Button>
+              <Button onClick={onLogout}>YES</Button>
+            </DialogActions>
+          </Dialog>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           {isLoggedIn ?(
-            <IconButton size="large"  color="inherit" onClick={onLogout}>
+            <IconButton size="large"  color="inherit" onClick={handleClickOpen}>
               <Badge badgeContent={0} color="error">
                 <ExitToAppIcon />
               </Badge>
+              
             </IconButton>
           ) : (
             <></>

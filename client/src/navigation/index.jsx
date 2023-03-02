@@ -37,6 +37,7 @@ const Navigation = () => {
   const handleLogout = () => {
     setToken(null);
     localStorage.removeItem('authToken');
+    window.location.reload()
   };
 
   return (

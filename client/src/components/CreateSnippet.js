@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
@@ -31,7 +31,7 @@ const CreateSnippet = () => {
   };
 
   return (
-    <Box sx={{ border: 1 , boxShadow: 1, margin: 4}}>
+    <Paper sx={{ border: 1 , margin: 4}}>
       <Typography variant="h4">Create New Snippet</Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -95,7 +95,7 @@ const CreateSnippet = () => {
           Create
         </Button>
       </form>
-    </Box>
+    </Paper>
   );
 };
 
