@@ -5,8 +5,6 @@ forum of hebut
 
 - [x] Set up the project structure with the necessary folders and files.
 - [x] Create a user model with Mongoose that includes fields such as username, email, password, and any other relevant user data.
-- user
-- topic
 - [x] Create routes to handle user registration, login, and logout. You can use Passport.js to handle authentication.
 - [x] Create a code snippet model with Mongoose that includes fields such as title, code, tags, and the user who created it.
 - [x] Create a comment model with Mongoose that includes fields such as the text of the comment and the user who created it.
