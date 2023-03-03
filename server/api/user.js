@@ -171,14 +171,15 @@ router.get('/codesnippets', async (req, res) => {
 
 // handdle comment
 router.post('/comments', validateToken, (req, res) => {
+  
   const { text, codeSnippetId,vote} = req.body;
-  const user = req.user;
-
+  console.log(req.body)
+  console.log(req.user._id)
   const comment = new Comment({
-    text,
-    user: user._id,
+    text: text,
+    user: req.user._id,
     codeSnippet: codeSnippetId,
-    vote:vote
+    vote: vote
   });
 
   comment.save((err, comment) => {

@@ -14,13 +14,11 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CreateComment from './CreateComment';
 
 const DetailSnippet = ({ open, handleClose, snippet, name, token, editable }) => {
-  const { title, code, tags, createdAt, updatedAt, _id} = snippet;
+  const { title, code, tags, createdAt, updatedAt} = snippet;
   const [commentCreated, setCommentCreated] = useState(false);
-
   const handleCommentCreated = () => {
     setCommentCreated(true);
   };
-
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>{title}</DialogTitle>
@@ -67,10 +65,10 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable }) =>
         {editable ? (
         <CreateComment
           token={token}
-          codeSnippetId={_id}
+          codeSnippetId={snippet._id}
           onCommentCreated={handleCommentCreated}
-        />):(<></>)
-        }
+        />):(<p>Please login to comment.</p>)}
+
         {commentCreated && (
           <Typography variant="subtitle1" gutterBottom>
             Comment created successfully!
