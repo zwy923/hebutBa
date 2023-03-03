@@ -16,8 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-import jwtDecode from 'jwt-decode';
-
+import { useNavigate } from 'react-router-dom';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,23 +30,25 @@ const ExpandMore = styled((props) => {
 }));
 
 const CodeSnippet = ({snippet, token, editable}) => {
-  const { title, code, tags, createdAt, updatedAt, description, user, _id} = snippet;
+  const { title, tags, createdAt, updatedAt, description, user, _id} = snippet;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
-  
+  const navigate = useNavigate();
+
   const ITEM_HEIGHT = 48;
   
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleEdit = () => {
     setAnchorEl(null);
+    navigate(`/edit/${_id}`);
   };
   
   const go4More = () => {
@@ -180,7 +181,7 @@ const CodeSnippet = ({snippet, token, editable}) => {
         <CardContent>
           Created At: {createdAt}<br></br>
           Updated At: {updatedAt}<br></br>
-          
+          {tags}
         </CardContent>
       </Collapse>
     </Card>

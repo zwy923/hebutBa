@@ -106,9 +106,25 @@ router.post('/codeSnippets', validateToken, (req, res) => {
   });
 });
 
+// Get an existing code snippet
+
+router.get('/codeSnippets/:id', validateToken, (req, res) => {
+  const codeSnippetId = req.params.id;
+  CodeSnippet.findOne({ _id: codeSnippetId}, (err, codeSnippet) => {
+    if (err) {
+      res.status(500).json({ error: 'Something went wrong' });
+    } else if (!codeSnippet) {
+      res.status(404).json({ error: 'Code snippet not found or unauthorized to edit' });
+    } else {
+      res.json(codeSnippet);
+    }
+  });
+});
+
 // Edit an existing code snippet
 router.put('/codeSnippets/:id', validateToken, (req, res) => {
   const codeSnippetId = req.params.id;
+  console.log(req.params.id)
   const userId = req.user._id;
   const { title, code, tags, description} = req.body;
 

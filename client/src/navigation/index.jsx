@@ -8,6 +8,8 @@ import Footer from '../components/footer';
 import Error from '../components/error'
 import jwtDecode from 'jwt-decode';
 import CreateSnippet from '../components/CreateSnippet';
+import EditPage from '../components/EditPage';
+
 const Navigation = () => {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
 
@@ -45,6 +47,7 @@ const Navigation = () => {
       <Routes>
         <Route path="*" element={<Error />} />
         <Route path="/" element={<Main  token={token}/>} />
+        <Route path='/edit/:id' element={<EditPage token={token}/>} />
         <Route path='createsnippet' element={<CreateSnippet token={token} isLoggedIn={token !== null} />} />
         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={<Register />} />
