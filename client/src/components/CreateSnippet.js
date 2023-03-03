@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import { Checkbox } from '@mui/material';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
-import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {atomDark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 const CreateSnippet = ({token}) => {
+  
 
   const navigate = useNavigate();
 
@@ -31,6 +32,20 @@ const CreateSnippet = ({token}) => {
 
   const handleTagsChange = (event) => {
     setTags(event.target.value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const { selectionStart, selectionEnd } = event.target;
+      const spaces = '    '; // use four spaces for each tab
+      setCode(
+        code.substring(0, selectionStart) +
+          spaces +
+          code.substring(selectionEnd)
+      );
+      event.target.setSelectionRange(selectionStart + spaces.length, selectionStart + spaces.length);
+    }
   };
 
   const label = { inputProps: { 'yes': 'no' } };
@@ -103,6 +118,7 @@ const CreateSnippet = ({token}) => {
           rows={10}
           value={code}
           onChange={handleCodeChange}
+          onKeyDown={handleKeyDown}
           margin="normal"
         />
         <Box  margin="normal" border={1} height={200}>
@@ -118,7 +134,7 @@ const CreateSnippet = ({token}) => {
               return !inline && match ? (
               <SyntaxHighlighter
                 children={String(children).replace(/\n$/, '')}
-                style={dark}
+                style={atomDark}
                 language={match[1]}
                 PreTag="div"
                 {...props}

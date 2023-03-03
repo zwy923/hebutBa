@@ -114,7 +114,7 @@ const CodeSnippet = ({snippet, token, editable}) => {
 
   return (
     <Card sx={{ maxWidth: 345 ,margin : 10}}>
-      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} />
+      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} editable={editable} token={token}/>
       <CardHeader
         action={
           <div>

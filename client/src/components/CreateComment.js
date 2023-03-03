@@ -1,14 +1,8 @@
-
-
-
-
 import React, { useState, useEffect } from 'react';
+import { TextField, Button } from '@mui/material';
 
-
-
-
-const CreateComment = (token,snippetId) =>{
-
+const CreateComment = (token,onCommentCreated,codeSnippetId) =>{
+    console.log(codeSnippetId)
     const [commentText, setCommentText] = useState('')
     
     const handleSubmitComment = async (event) => {
@@ -22,7 +16,7 @@ const CreateComment = (token,snippetId) =>{
             },
             body: JSON.stringify({
               text: commentText,
-              codeSnippetId: snippetId,
+              codeSnippetId: codeSnippetId,
               vote: 0
             })
           });
@@ -39,4 +33,23 @@ const CreateComment = (token,snippetId) =>{
         }
       };
 
+    return (
+        <div>
+          <TextField
+            label="Post a comment"
+            multiline
+            fullWidth
+            value={commentText.toString()}
+            onChange={(event) => setCommentText(event.target.value)}
+            variant="outlined"
+            margin="normal"
+          />
+          <Button type="submit" variant="contained" onClick={handleSubmitComment} color="primary">
+            Comment
+          </Button>
+        </div>
+      );
+
 }
+
+export default CreateComment;

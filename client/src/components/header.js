@@ -144,9 +144,12 @@ export default function Header({ isLoggedIn, onLogout, token}) {
     alert("User name: " + userName + "\nGroup: " + userRole)
   };
 
+  const handleOnclose = () => {
+    setAnchor1(null);
+  }
+
   const handleMenuClose = () => {
     setAnchor2(null);
-    
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -177,7 +180,7 @@ export default function Header({ isLoggedIn, onLogout, token}) {
         horizontal: 'right',
       }}
       open={isProfileMenuOpen}
-      onClose={handleProfileMenuClose}
+      onClose={handleOnclose}
     >
       <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>

@@ -45,6 +45,20 @@ const EditPage = ({ token }) => {
     setTags(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const { selectionStart, selectionEnd } = event.target;
+      const spaces = '    '; // use four spaces for each tab
+      setCode(
+        code.substring(0, selectionStart) +
+          spaces +
+          code.substring(selectionEnd)
+      );
+      event.target.setSelectionRange(selectionStart + spaces.length, selectionStart + spaces.length);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -100,6 +114,7 @@ const EditPage = ({ token }) => {
           id="markdown"
           label="markdown"
           fullWidth
+          onKeyDown={handleKeyDown} // handle Tab key press
           multiline
           rows={10}
           value={code}
@@ -114,7 +129,7 @@ const EditPage = ({ token }) => {
           onChange={handleTagsChange}
           margin="normal"
         />
-        <Button variant="contained" margin='20' onClick={handleSubmit}>
+        <Button variant="contained" sx={{margin:2}} onClick={handleSubmit}>
           Save Changes
         </Button>
       </form>
