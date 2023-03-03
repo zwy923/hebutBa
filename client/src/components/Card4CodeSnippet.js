@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import DetailSnippet from './Detail4Snippet';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -35,13 +36,14 @@ const CodeSnippet = ({snippet, token, editable}) => {
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const ITEM_HEIGHT = 48;
   
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -52,7 +54,7 @@ const CodeSnippet = ({snippet, token, editable}) => {
   };
   
   const go4More = () => {
-
+    setDetailOpen(true)
   }
 
   const upPost = () => {
@@ -112,6 +114,7 @@ const CodeSnippet = ({snippet, token, editable}) => {
 
   return (
     <Card sx={{ maxWidth: 345 ,margin : 10}}>
+      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} />
       <CardHeader
         action={
           <div>
