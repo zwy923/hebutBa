@@ -128,6 +128,7 @@ const RegistrationForm = () => {
                     type="password"
                     id="password"
                     autoComplete="password"
+                    helperText="Please use strong password combination"
                   />
                 </Grid>
 

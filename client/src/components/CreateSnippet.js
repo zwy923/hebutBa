@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import { Checkbox } from '@mui/material';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 const CreateSnippet = ({token}) => {
 
@@ -109,31 +110,27 @@ const CreateSnippet = ({token}) => {
           Preview
         </Typography>
         
-        <ReactMarkdown sx={{ textAlign: 'left' }}
-          className="markdown-preview"
+        <ReactMarkdown
           children={code}
           components={{
-            code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || '');
+            code({node, inline, className, children, ...props}) {
+              const match = /language-(\w+)/.exec(className || '')
               return !inline && match ? (
-                <Box component="pre"  className={`hljs ${className}`} sx={{ textAlign: 'left' }}>
-                  <code
-                    className={`hljs ${className}`}
-                    sx={{ textAlign: 'left' }}
-                    {...props}
-                    dangerouslySetInnerHTML={{
-                      __html: hljs.highlightAuto(children, [match[1]]).value,
-                    }}
-                  />
-                </Box>
-              ) : (
-                <code className={className}  {...props} sx={{ textAlign: 'left' }}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-        />
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={dark}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+            />
+          ) : (
+            <code className={className} {...props}>
+            {children}
+            </code>
+            )
+          }
+        }}
+       />
         </Box>
 
         <Button variant="contained" sx={{margin:2}} endIcon={<SendIcon />} onClick={handleSubmit}>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-import hljs from 'highlight.js';
 import 'highlight.js/styles/vs2015.css'
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 const DetailSnippet = ({ open, handleClose, snippet, name}) => {
   const { title, code, tags, createdAt, updatedAt} = snippet;
@@ -15,31 +16,28 @@ const DetailSnippet = ({ open, handleClose, snippet, name}) => {
           Author: {name}
         </Typography>
 
-          <ReactMarkdown
-            className="markdown"
-            children={code}
-            components={{
-              code({ node, inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || '');
-                return !inline && match ? (
-                  <pre className={`hljs ${className}`}>
-                    <code
-                      className={`hljs ${className}`}
-                      {...props}
-                      dangerouslySetInnerHTML={{
-                        __html: hljs.highlightAuto(children, [match[1]]).value,
-                      }}
-                    />
-                  </pre>
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-            }}
-          />
-          
+        <ReactMarkdown
+          children={code}
+          components={{
+            code({node, inline, className, children, ...props}) {
+              const match = /language-(\w+)/.exec(className || '')
+              return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={dark}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+            />
+          ) : (
+            <code className={className} {...props}>
+            {children}
+            </code>
+            )
+          }
+        }}
+       />
+
         <Typography variant="subtitle1" gutterBottom>
           Created At: {new Date(createdAt).toLocaleString()}
         </Typography>
