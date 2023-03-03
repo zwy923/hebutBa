@@ -16,6 +16,8 @@ import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import jwtDecode from 'jwt-decode';
+
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,9 +30,8 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
-  const { title, code, tags, createdAt, updatedAt, description,user, _id} = snippet;
-
+const CodeSnippet = ({snippet, token, editable}) => {
+  const { title, code, tags, createdAt, updatedAt, description, user, _id} = snippet;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
@@ -92,7 +93,7 @@ const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          user
+          "userid":user
         })});
       const data = await response.json();
       setUserName(data.name);
@@ -113,7 +114,7 @@ const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
       <CardHeader
         action={
           <div>
-            {isLoggedIn ?(
+            {editable ?(
             <IconButton
               aria-label="more"
               id="long-button"
@@ -159,7 +160,7 @@ const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
         
         <Button variant="text" onClick={go4More}>More</Button>
         
-        {isLoggedIn ? (
+        {editable ? (
         <IconButton aria-label="add to favorites" onClick={upPost}>
           <FavoriteIcon />
         </IconButton>):(<></>)
@@ -178,7 +179,8 @@ const CodeSnippet = ({ isLoggedIn, snippet, token}) => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           Created At: {createdAt}<br></br>
-          Updated At: {updatedAt}
+          Updated At: {updatedAt}<br></br>
+          
         </CardContent>
       </Collapse>
     </Card>

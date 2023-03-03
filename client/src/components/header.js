@@ -22,8 +22,9 @@ import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { alpha, createTheme, styled } from '@mui/material/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -89,12 +90,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Header({ isLoggedIn, onLogout }) {
+
+export default function Header({ isLoggedIn, onLogout, token}) {
   const [anchor1, setAnchor1] = React.useState(null);
   const [anchor2, setAnchor2] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-
+  const [userName, setUserName] = React.useState('')
+  const [userRole, setUserRole] = React.useState('')
+  
+  useEffect(() => {
+    if(token){
+      const decodedToken = jwtDecode(token);
+      const name = decodedToken.name
+      const role = decodedToken.role
+      setUserName(name)
+      setUserRole(role)
+    }
+  },[])
 
   const isProfileMenuOpen = Boolean(anchor1);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -128,10 +141,12 @@ export default function Header({ isLoggedIn, onLogout }) {
 
   const handleProfileMenuClose = () => {
     setAnchor1(null);
+    alert("User name: " + userName + "\nGroup: " + userRole)
   };
 
   const handleMenuClose = () => {
     setAnchor2(null);
+    
   };
 
   const handleMobileMenuOpen = (event) => {

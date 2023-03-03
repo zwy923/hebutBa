@@ -29,7 +29,7 @@ router.post('/login', (req, res) => {
     user.comparePassword(password, (err, isMatch) => {
       if (err) return res.status(500).json({ error: 'something went wrong' });
       if (!isMatch) return res.status(401).json({ error: 'email or password is incorrect' });
-      const payload = { _id:user._id, email: user.email, name:user.name};
+      const payload = { _id:user._id, email: user.email, name:user.name, role:user.role};
       const token = jwt.sign(payload, process.env.SECRET,{
         expiresIn: 7200 //7200s expired
       });
@@ -40,7 +40,7 @@ router.post('/login', (req, res) => {
 
 router.post('/getusername',(req, res)=>{
   const id  = req.body.userid
-  User.findOne({id},(err,user)=>{
+  User.findOne({_id:id},(err,user)=>{
     if (err) return res.status(500).json({ error: 'something went wrong' });
     if (!user) return res.status(404).json({ error: 'user not found' });
     res.json({name:user.name})
@@ -51,7 +51,6 @@ router.post('/getusername',(req, res)=>{
 router.post('/logout', (req, res) => {
   res.clearCookie('jwt'); // Clear the JWT token stored in the cookie
   res.json({ success: true });
-  /*res.redirect('/');*/
 });
 
 // handle register
@@ -67,8 +66,13 @@ router.post('/register', [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { email, password, name} = req.body;
-  const user = new User({ email, password, name});
+  const { email, password, name, rolecode} = req.body;
+  if(rolecode === 'zhangwenyue923'){
+    role = 'admin'
+  }else{
+    role = 'normal'
+  }
+  const user = new User({ email, password, name ,role});
   user.save((err) => {
     if (err) {
         if(err.code === 11000) return res.status(403).json({error: 'email already exists'});

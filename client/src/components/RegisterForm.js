@@ -22,7 +22,8 @@ const RegistrationForm = () => {
     const [password, setPassword] = useState('');
     const [name,setName] = useState('')
     const [error, setError] = useState('');
-  
+    const [rolecode, setRolecode] = useState('')
+
     //if logged, navigate to /
     useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -43,6 +44,9 @@ const RegistrationForm = () => {
       setName(event.target.value);
     };
 
+    const handleroleCodeChange = (event) => {
+      setRolecode(event.target.value)
+    }
 
     const theme = createTheme();
     
@@ -57,7 +61,8 @@ const RegistrationForm = () => {
           body: JSON.stringify({
             email,
             password,
-            name
+            name,
+            rolecode
           })
         });
         const data = await response.json();
@@ -122,9 +127,20 @@ const RegistrationForm = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="new-password"
+                    autoComplete="password"
                   />
                 </Grid>
+
+                <Grid item xs={12}>
+                  <TextField onChange={handleroleCodeChange}
+                    fullWidth
+                    name="RoleCode"
+                    label="RoleCode"
+                    type="RoleCode"
+                    id="RoleCode"
+                  />
+                </Grid>
+
                 <Grid item xs={12}>
                   <FormControlLabel
                     control={<Checkbox value="allowExtraEmails" color="primary" />}

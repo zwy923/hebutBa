@@ -19,8 +19,7 @@ const Navigation = () => {
       // token is still valid
     }
   }
-  
-  
+
   // If a local token is detected
   useEffect(() => {
     const localToken = localStorage.getItem('authToken');
@@ -42,7 +41,7 @@ const Navigation = () => {
 
   return (
     <Router>
-      <Header isLoggedIn={token !== null} onLogout={handleLogout} />
+      <Header isLoggedIn={token !== null} onLogout={handleLogout} token={token}/>
       <Routes>
         <Route path="*" element={<Error />} />
         <Route path="/" element={<Main  token={token}/>} />

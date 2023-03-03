@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     name: {
       type: String,
       required: true
+    },
+    role: { //admin or normal or ban
+      type: String,
+      required: true
     }
   });
 
