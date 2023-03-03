@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const EditPage = ({ token }) => {
   const { id } = useParams();
@@ -8,6 +11,8 @@ const EditPage = ({ token }) => {
   const [description, setDescription] = useState('');
   const [code, setCode] = useState('');
   const [tags, setTags] = useState('');
+  const navigate = useNavigate();
+
   
   useEffect(() => {
     const fetchCodeSnippet = async () => {
@@ -61,6 +66,7 @@ const EditPage = ({ token }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const response = await fetch(`http://localhost:1234/api/user/codeSnippets/${id}`, {
         method: 'PUT',
@@ -79,6 +85,7 @@ const EditPage = ({ token }) => {
       if (response.ok) {
         console.log(data)
         alert("Successful!")
+        navigate('/')
         window.location.reload()
       } else {
         throw new Error(data.message);
