@@ -6,7 +6,7 @@ const cors = require('cors');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 var indexRouter = require('./routes/index');
 var apiRouter = require('./api/index')
@@ -21,7 +21,6 @@ db.on("error",console.error.bind(console,"MongoDB connection error."))
 
 
 var app = express();
-
 
 process.env.SECRET = 'mysecretkey';
 
@@ -44,6 +43,7 @@ passport.use(
       });
     })
 );
+
 
 
 /**这个cors顺序很重要 */

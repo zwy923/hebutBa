@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true
     }
+    
   });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
