@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
+const Comment = require('./Comment');
+const Vote = require('./Vote')
 
 const codeSnippetSchema = new mongoose.Schema({
+
   title: {
     type: String,
     required: true
@@ -28,16 +31,18 @@ const codeSnippetSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-codeSnippetSchema.pre('remove', async function (next) {
+codeSnippetSchema.pre('findOneAndDelete', async function (next) {
   try {
-    // Remove all associated comments
-    await Comment.deleteMany({ codeSnippet: this._id });
 
+    // Remove all associated comments
+    await Comment.deleteMany({ codeSnippet: this._conditions._id });
+    console.log("111")
     // Remove all associated votes
-    await Vote.deleteMany({ objectId: this._id });
+    await Vote.deleteMany({ objectId: this._conditions._id });
 
     next();
   } catch (err) {
+    console.log(err)
     next(err);
   }
 });

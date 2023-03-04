@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Vote = require('./Vote')
 
 const commentSchema = new mongoose.Schema({
   text: {
@@ -21,17 +22,29 @@ const commentSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-commentSchema.pre('remove', async function (next) {
+commentSchema.pre('findOneAndDelete', async function (next) {
   try {
 
     // Remove all associated votes
-    await Vote.deleteMany({ objectId: this._id });
+    await Vote.deleteMany({ objectId: this._conditions._id });
 
     next();
   } catch (err) {
     next(err);
   }
 });
+
+commentSchema.pre('deleteMany', async function (next) {
+  try {
+
+    // Remove all associated votes
+    await Vote.deleteMany({ objectId: this._conditions._id });
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+})
 
 const Comment = mongoose.model('Comment', commentSchema);
 
