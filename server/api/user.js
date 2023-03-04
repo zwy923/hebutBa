@@ -206,10 +206,9 @@ router.post('/comments', validateToken, (req, res) => {
 // Edit an existing comment
 router.put('/comments/:id', validateToken, (req, res) => {
   const commentId = req.params.id;
-  const userId = req.user._id;
-  const { text } = req.body;
+  const text = req.body.text;
 
-  Comment.findOneAndUpdate({ _id: commentId, user: userId }, { text }, { new: true }, (err, comment) => {
+  Comment.findOneAndUpdate({ _id: commentId}, { text }, { new: true }, (err, comment) => {
     if (err) {
       res.status(500).json({ error: 'Something went wrong' });
     } else if (!comment) {
