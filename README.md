@@ -16,7 +16,7 @@ forum of hebut
 - [x] Create an admin account with special privileges to edit and delete content.
 - [ ] Test the software for accessibility using keyboard navigation and screen readers.
 - [ ] Implement a search function to allow users to filter posts by keyword.
-- [ ] Implement voting functionality to allow users to upvote or downvote posts and comments.
+- [x] Implement voting functionality to allow users to upvote or downvote posts and comments.
 - [ ] Implement user profiles with images, user bios, and registration dates.
-- [ ] Implement last edited timestamps for posts and comments.
+- [x] Implement last edited timestamps for posts and comments.
 - [ ] Write (unit) tests and automate testing with Cypress.io.
