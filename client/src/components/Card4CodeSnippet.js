@@ -159,7 +159,9 @@ const CodeSnippet = ({snippet, token, editable}) => {
 
   useEffect(() => {
     initVoteCount(_id)
-    initVote(_id)
+    if(token){
+      initVote(_id)
+    }
     const fetchUserName = async () => {
       const response = await fetch(`http://localhost:1234/api/user/getusername`,{
         method:'post',
