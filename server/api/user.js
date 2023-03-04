@@ -168,16 +168,29 @@ router.get('/codesnippets', async (req, res) => {
   }
 });
 
+// Get all comments for a specific code snippet
+router.get('/comments/:snippetId', async (req, res) => {
+  const snippetId = req.params.snippetId;
+  try {
+    const comments = await Comment.find({ codeSnippet: snippetId })
+      .populate('user', 'name')
+      .sort({ createdAt: -1 });
+    res.json({ comments });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
 
-// handdle comment
+// handdle post comment
 router.post('/comments', validateToken, (req, res) => {
   
-  const { text, codeSnippetId,vote} = req.body;
+  const text= req.body.text;
+  const codeSnippetId=req.body.codeSnippetId
   const comment = new Comment({
     text: text,
     user: req.user._id,
     codeSnippet: codeSnippetId,
-    vote: vote
   });
 
   comment.save((err, comment) => {

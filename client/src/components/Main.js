@@ -38,9 +38,9 @@ const Main = ({token}) => {
         {codeSnippets.map((snippet) => (
           <CodeSnippet
           key={snippet._id}
-          isLoggedIn={token !== null}
           snippet={snippet}
           token={token}
+          role={role}
           editable={snippet.user === id || role === 'admin'}
         />
         ))}

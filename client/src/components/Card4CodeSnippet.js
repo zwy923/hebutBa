@@ -30,12 +30,15 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CodeSnippet = ({snippet, token, editable}) => {
+const CodeSnippet = ({snippet, token, editable, role}) => {
+  
+  const navigate = useNavigate();
   const { title, tags, createdAt, updatedAt, description, user, _id} = snippet;
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [userName, setUserName] = useState('');
-  const navigate = useNavigate();
+  
   const [detailOpen, setDetailOpen] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
   const [count,setCount] = useState(0)
@@ -187,7 +190,7 @@ const CodeSnippet = ({snippet, token, editable}) => {
 
   return (
     <Card sx={{ maxWidth: 345 ,margin : 10}}>
-      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} editable={editable} token={token}/>
+      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} editable={editable} role={role} token={token}/>
       <CardHeader
         action={
           <div>

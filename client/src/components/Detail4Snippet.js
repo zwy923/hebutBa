@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -12,13 +12,26 @@ import 'highlight.js/styles/vs2015.css';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CreateComment from './CreateComment';
+import CommentCard from './Card4Comment';
 
-const DetailSnippet = ({ open, handleClose, snippet, name, token, editable }) => {
-  const { title, code, tags, createdAt, updatedAt} = snippet;
+const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role}) => {
+  const { title, code, tags, createdAt, updatedAt, _id} = snippet;
+
   const [commentCreated, setCommentCreated] = useState(false);
+  const [comments, setComments] = useState([]);
   const handleCommentCreated = () => {
     setCommentCreated(true);
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const response = await fetch(`http://localhost:1234/api/user/comments/${_id}`);
+      const data = await response.json();
+      setComments(data.comments);
+    };
+    fetchComments();
+  }, [commentCreated, _id]);
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>{title}</DialogTitle>
@@ -61,7 +74,12 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable }) =>
         <Typography variant="subtitle1" gutterBottom>Tags:
           <Button size='small' variant="text">{tags}</Button>
         </Typography>
-
+        <p>Comment:</p>
+          <div>
+            {comments.map((comment) => (
+            <CommentCard key={comment._id} comment={comment} token={token} role={role} />
+            ))}
+          </div>
         {editable ? (
         <CreateComment
           token={token}
