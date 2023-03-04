@@ -21,8 +21,26 @@ const codeSnippetSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  vote: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vote',
   }
 }, { timestamps: true });
+
+codeSnippetSchema.pre('remove', async function (next) {
+  try {
+    // Remove all associated comments
+    await Comment.deleteMany({ codeSnippet: this._id });
+
+    // Remove all associated votes
+    await Vote.deleteMany({ objectId: this._id });
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 const CodeSnippet = mongoose.model('CodeSnippet', codeSnippetSchema);
 

@@ -37,6 +37,8 @@ const CodeSnippet = ({snippet, token, editable}) => {
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
   const [detailOpen, setDetailOpen] = useState(false);
+  const [isVoted, setIsVoted] = useState(false);
+  const [count,setCount] = useState(0)
 
   const ITEM_HEIGHT = 48;
   
@@ -57,8 +59,75 @@ const CodeSnippet = ({snippet, token, editable}) => {
     setDetailOpen(true)
   }
 
-  const upPost = () => {
 
+  const initVote = async (_id) => {
+    try{
+      const response = await fetch(`http://localhost:1234/api/user/votes/${_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      if (response.ok) {
+        const Data = await response.json()
+        setIsVoted(Data.isvoted);
+      } else if (response.status === 401) {
+        alert('You need to be logged in to vote.');
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+    }catch (error) {
+      alert(`Error voting: ${error.message}`);
+    }
+  }
+
+  const initVoteCount = async(_id) =>{
+    try{
+      const response = await fetch(`http://localhost:1234/api/user/votes/count/${_id}`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json',},
+      });
+      if (response.ok) {
+        const Data = await response.json()
+        setCount(Data.count)
+      }else 
+      {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+    }catch (error) {
+      alert(`Error voting: ${error.message}`);
+    }
+  }
+  const goVote = async () => {
+    try {
+
+      const response = await fetch(`http://localhost:1234/api/user/votes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: snippet._id,
+        }),
+      });
+  
+      if (response.ok) {
+        const Data = await response.json()
+        setIsVoted(Data.isvoted);
+        window.location.reload();
+      } else if (response.status === 401) {
+        alert('You need to be logged in to vote.');
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+    } catch (error) {
+      alert(`Error voting: ${error.message}`);
+    }
   }
 
   const handleDelete = async () => {
@@ -89,6 +158,8 @@ const CodeSnippet = ({snippet, token, editable}) => {
 
 
   useEffect(() => {
+    initVoteCount(_id)
+    initVote(_id)
     const fetchUserName = async () => {
       const response = await fetch(`http://localhost:1234/api/user/getusername`,{
         method:'post',
@@ -165,11 +236,11 @@ const CodeSnippet = ({snippet, token, editable}) => {
         <Button variant="text" onClick={go4More}>More</Button>
         
         {editable ? (
-        <IconButton aria-label="add to favorites" onClick={upPost}>
+        <IconButton aria-label="add to favorites" onClick={goVote} style={{ color: isVoted ? 'red' : 'grey' }}>
           <FavoriteIcon />
         </IconButton>):(<></>)
         }
-
+        <p>{count} liked</p>
 
         <ExpandMore
           expand={expanded}

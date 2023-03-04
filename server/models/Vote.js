@@ -6,22 +6,18 @@ const voteSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  objectType: {
-    type: String,
-    enum: ['post', 'comment'],
-    required: true,
-  },
   objectId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  type: {
-    type: String,
-    enum: ['upvote', 'downvote'],
+  isvoted: {
+    type: Boolean,
     required: true,
+    default: false,
   },
 });
 
 const Vote = mongoose.model('Vote', voteSchema);
 
 module.exports = Vote;
+

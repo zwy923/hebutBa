@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const User = require('../models/User')
 const Comment = require('../models/Comment');
 const CodeSnippet = require('../models/CodeSnippet');
+const Vote = require('../models/Vote')
 
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
@@ -124,7 +125,6 @@ router.get('/codeSnippets/:id', validateToken, (req, res) => {
 // Edit an existing code snippet
 router.put('/codeSnippets/:id', validateToken, (req, res) => {
   const codeSnippetId = req.params.id;
-  console.log(req.params.id)
   const userId = req.user._id;
   const { title, code, tags, description} = req.body;
 
@@ -173,8 +173,6 @@ router.get('/codesnippets', async (req, res) => {
 router.post('/comments', validateToken, (req, res) => {
   
   const { text, codeSnippetId,vote} = req.body;
-  console.log(req.body)
-  console.log(req.user._id)
   const comment = new Comment({
     text: text,
     user: req.user._id,
@@ -224,6 +222,53 @@ router.delete('/comments/:id', validateToken, (req, res) => {
     }
   });
 });
+
+
+// Upvote or cancel vote a post or comment
+router.post('/votes', validateToken, async (req, res) => {
+  const objectId = req.body.id;
+  const userId = req.user._id;
+  try {
+    const existingVote = await Vote.findOne({ user: userId, objectId: objectId });
+    if (existingVote) {
+      await Vote.deleteOne(existingVote)
+      res.status(200).json({ isvoted: false });
+    } else {
+      const newVote = new Vote({ user: userId, objectId: objectId, isvoted: true });
+      await newVote.save();
+      res.status(201).json({ isvoted: true });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+// Get the isvoted status of a post or comment
+router.get('/votes/:id', validateToken, async (req, res) => {
+  const objectId = req.params.id;
+  const userId = req.user._id;
+  try {
+    const vote = await Vote.findOne({ user: userId, objectId: objectId });
+    if (vote) {
+      res.status(200).json({ isvoted: true });
+    } else {
+      res.status(200).json({ isvoted: false });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+// Get count of votes in specific post
+router.get('/votes/count/:id', async (req, res) => {
+  console.log(req.params.id)
+  const Id = req.params.id;
+  const voteCount = await Vote.countDocuments({ objectId: Id, isvoted: true });
+  res.status(200).json({ count: voteCount });
+});
+
 
 
 module.exports = router;

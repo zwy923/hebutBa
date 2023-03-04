@@ -18,9 +18,20 @@ const commentSchema = new mongoose.Schema({
   vote:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Vote',
-    required: true
   }
 }, { timestamps: true });
+
+commentSchema.pre('remove', async function (next) {
+  try {
+
+    // Remove all associated votes
+    await Vote.deleteMany({ objectId: this._id });
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 const Comment = mongoose.model('Comment', commentSchema);
 
