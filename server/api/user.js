@@ -68,12 +68,13 @@ router.post('/register', [
     return res.status(400).json({ errors: errors.array() });
   }
   const { email, password, name, rolecode} = req.body;
+  const profile = "This user is very lazy and hasn't left a profile :)"
   if(rolecode === 'zhangwenyue923'){
     role = 'admin'
   }else{
     role = 'normal'
   }
-  const user = new User({ email, password, name ,role});
+  const user = new User({ email, password, name ,role, profile});
   user.save((err) => {
     if (err) {
         if(err.code === 11000) return res.status(403).json({error: 'email already exists'});

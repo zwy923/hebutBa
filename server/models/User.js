@@ -18,8 +18,11 @@ const userSchema = new mongoose.Schema({
     role: { //admin or normal or ban
       type: String,
       required: true
+    },
+    profile: {
+      type: String,
+      required: true
     }
-    
   });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {

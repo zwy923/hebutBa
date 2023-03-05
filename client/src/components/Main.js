@@ -46,7 +46,7 @@ const Main = ({ token }) => {
 
   return (
     <>
-    <Grid container spacing={3}>
+    <Grid justifyContent="center" direction="row" alignItems="center" display="flex" container spacing={2}>
       {codeSnippets.slice(startIdx, endIdx).map((snippet) => (
         <Grid key={snippet._id} item xs={12} md={4}>
           <CodeSnippet
