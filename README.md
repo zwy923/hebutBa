@@ -3,6 +3,7 @@
 forum of hebut
 
 ![Detail4Snippets](./public/img/example1.png)
+## Project description
 
 ## features(51 points)：
 - [x] Basic features
@@ -35,7 +36,7 @@ then start the front end
 ```
 npm run dev:client
 ```
-### user manual
+## user manual
 #### Sign in
 ![login](./public/img/howtolog.png)
 Click here to log in. You cannot comment or post codeSnippet without logging in.
