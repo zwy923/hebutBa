@@ -4,7 +4,7 @@ forum of hebut
 
 ![Detail4Snippets](./public/img/example1.png)
 
-## echnology selection
+## Technology selection
 
 ### Backend:
 
