@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6f731521-4e1d-4a62-ad86-7674737d0424/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/hebut",
+    "appService.deploySubpath": "server",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}

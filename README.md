@@ -2,7 +2,7 @@
 
 forum of hebut
 
-
+![Detail4Snippets](./public/img/example1.png)
 - [x] Set up the project structure with the necessary folders and files.
 - [x] Create a user model with Mongoose that includes fields such as username, email, password, and any other relevant user data.
 - [x] Create routes to handle user registration, login, and logout. You can use Passport.js to handle authentication.
