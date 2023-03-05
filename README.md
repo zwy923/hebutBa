@@ -4,7 +4,7 @@ forum of hebut
 
 ![Detail4Snippets](./public/img/example1.png)
 
-### features(51 points)：
+## features(51 points)：
 - [x] Basic features
 - [x] Users can edit their own comments/posts
 - [x] Utilization of a frontside framework, React
@@ -15,9 +15,9 @@ forum of hebut
 - [x] User profiles can have images which are show next to posts
 - [x] Last edited timestamp is stored and shown with posts/comments
 
-### installation guidelines
+## installation guidelines
 
-## Installation dependency
+### Installation dependency
 Enter the root directory
 ```
 npm install
