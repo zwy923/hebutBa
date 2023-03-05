@@ -5,6 +5,28 @@ forum of hebut
 ![Detail4Snippets](./public/img/example1.png)
 ## Project description
 
+### Backend
+
+
+## echnology selection
+
+### Backend:
+
+For the backend, Node.js was used as the primary technology. Node.js is a popular open-source server-side runtime environment that allows developers to build scalable and high-performance web applications using JavaScript. The reason for choosing Node.js is that it provides a non-blocking I/O model, making it ideal for building fast and scalable web applications. 
+
+For the web framework, Express.js was chosen. Express.js is a popular open-source web framework for Node.js that simplifies the process of building web applications. It provides a minimalist approach to web development, allowing developers to build scalable and efficient applications quickly.
+
+For data storage, MongoDB was chosen. MongoDB is a NoSQL document-oriented database that provides high performance, scalability, and flexibility. It allows developers to store and retrieve data in JSON-like documents, making it easy to work with data.
+
+### Authentication and Authorization:
+
+For authentication and authorization, JSON Web Tokens (JWT) were used by me. JWT is an open standard for securely transmitting information between parties as a JSON object. It is widely used for authentication and authorization purposes in web applications. 
+
+### Frontend:
+
+For the frontend, a front-end framework such as React was used. This frameworks provide a set of tools and libraries for building scalable and efficient web applications. They provide a component-based architecture, making it easy to build reusable and maintainable code.
+
+For styling, Materialize was uesd. This is popular CSS frameworks that provide a set of pre-designed UI components that can be easily customized to match the application's design requirements.
 ## features(51 points)：
 - [x] Basic features
 - [x] Users can edit their own comments/posts
