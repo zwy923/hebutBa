@@ -46,7 +46,7 @@ Click here to log in. You cannot comment or post codeSnippet without logging in.
 Sign up interface.
 Please note that your password type must be a strong password combination (at least one uppercase and lowercase letter, and contain numbers and special symbols)
 
-![rolecode](./public/img/rolecode.png)
+![rolecode](./public/img/rolecode.png)  
 You can obtain the identity of the administrator by entering the administrator code defined on the server (delete anyone's posts and comments)
 
 ####
