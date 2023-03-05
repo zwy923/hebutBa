@@ -3,10 +3,6 @@
 forum of hebut
 
 ![Detail4Snippets](./public/img/example1.png)
-## Project description
-
-### Backend
-
 
 ## echnology selection
 
