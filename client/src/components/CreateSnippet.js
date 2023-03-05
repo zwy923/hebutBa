@@ -34,6 +34,7 @@ const CreateSnippet = ({token}) => {
     setTags(event.target.value);
   };
 
+  // Handle TAB key down
   const handleKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();

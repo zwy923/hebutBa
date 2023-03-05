@@ -50,6 +50,7 @@ const EditPage = ({ token }) => {
     setTags(event.target.value);
   };
 
+  // TAB
   const handleKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();

@@ -4,7 +4,7 @@ import Grid from '@mui/joy/Grid';
 import Pagination from '@mui/material/Pagination';
 import jwtDecode from 'jwt-decode';
 
-const Main = ({ token }) => {
+const Main = ({ token ,isLoggedIn}) => {
   const [codeSnippets, setCodeSnippets] = useState([]);
   const [id, setId] = useState('');
   const [role, setRole] = useState('');
@@ -46,13 +46,14 @@ const Main = ({ token }) => {
 
   return (
     <>
-    <Grid justifyContent="center" direction="row" alignItems="center" display="flex" container spacing={2}>
+    <Grid justifyContent="center" direction="row"  display="flex" container spacing={2}>
       {codeSnippets.slice(startIdx, endIdx).map((snippet) => (
         <Grid key={snippet._id} item xs={12} md={4}>
           <CodeSnippet
             snippet={snippet}
             token={token}
             role={role}
+            isLoggedIn={isLoggedIn}
             editable={snippet.user === id || role === 'admin'}
           />
         </Grid>

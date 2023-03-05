@@ -40,6 +40,7 @@ const LoginForm = ({onLoginSuccess}) => {
     setPassword(event.target.value);
   };
 
+  // define a function called handleSubmit that takes an event object as an argument
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

@@ -19,6 +19,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DetailSnippet from './Detail4Snippet';
 
+// Defining the styled component 'ExpandMore'
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -30,9 +31,11 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const CodeSnippet = ({snippet, token, editable, role}) => {
+// Defining the component 'CodeSnippet'
+const CodeSnippet = ({snippet, token, editable, role, isLoggedIn}) => {
   
   const navigate = useNavigate();
+  // Destructuring required properties from 'snippet'
   const { title, tags, createdAt, updatedAt, description, user, _id} = snippet;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -40,15 +43,19 @@ const CodeSnippet = ({snippet, token, editable, role}) => {
   const [userName, setUserName] = useState('');
   
   const [detailOpen, setDetailOpen] = useState(false);
+  // State for handling vote
   const [isVoted, setIsVoted] = useState(false);
   const [count,setCount] = useState(0)
 
+  // Constant for menu height
   const ITEM_HEIGHT = 48;
   
+  // Function to handle click of the menu button
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Function to handle closing of the menu
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -190,7 +197,7 @@ const CodeSnippet = ({snippet, token, editable, role}) => {
 
   return (
     <Card sx={{ maxWidth: 345 ,margin : 10}}>
-      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} editable={editable} role={role} token={token}/>
+      <DetailSnippet open={detailOpen} handleClose={() => setDetailOpen(false)} name={userName} snippet={snippet} editable={editable} role={role} token={token} isLoggedIn={isLoggedIn}/>
       <CardHeader
         action={
           <div>
@@ -240,7 +247,7 @@ const CodeSnippet = ({snippet, token, editable, role}) => {
         
         <Button variant="text" onClick={go4More}>More</Button>
         
-        {editable ? (
+        {isLoggedIn ? (
         <IconButton aria-label="add to favorites" onClick={goVote} style={{ color: isVoted ? 'red' : 'grey' }}>
           <FavoriteIcon />
         </IconButton>):(<></>)

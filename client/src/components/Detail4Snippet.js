@@ -14,7 +14,7 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CreateComment from './CreateComment';
 import CommentCard from './Card4Comment';
 
-const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role}) => {
+const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role, isLoggedIn}) => {
   const { title, code, tags, createdAt, updatedAt, _id} = snippet;
 
   const [commentCreated, setCommentCreated] = useState(false);
@@ -24,6 +24,7 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role
   };
 
   useEffect(() => {
+    // Define an async function to fetch the comments from the API
     const fetchComments = async () => {
       const response = await fetch(`http://localhost:1234/api/user/comments/${_id}`);
       const data = await response.json();
@@ -80,7 +81,7 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role
             <CommentCard key={comment._id} comment={comment} token={token} role={role} />
             ))}
           </div>
-        {editable ? (
+        {isLoggedIn ? (
         <CreateComment
           token={token}
           codeSnippetId={snippet._id}

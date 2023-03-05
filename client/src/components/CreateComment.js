@@ -17,9 +17,11 @@ const CreateComment = ({token,onCommentCreated,codeSnippetId}) =>{
   const [fontWeight, setFontWeight] = React.useState('normal');
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  // This function handles the form submission when a user submits a new comment
   const handleSubmitComment = async (event) => {
     event.preventDefault();
     setItalic((bool) => !bool)
+    // Attempt to submit the comment to the server
     try {
       const response = await fetch('http://localhost:1234/api/user/comments', {
         method: 'POST',

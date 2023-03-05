@@ -47,7 +47,8 @@ const CommentCard = ({ comment, token, role}) => {
   const handleEditTextChange = (event) => {
     setEditText(event.target.value);
   };
-
+  
+  // This function handles the submission of an edited comment
   const handleEditSubmit = async () => {
     try {
       const response = await fetch(`http://localhost:1234/api/user/comments/${_id}`, {
@@ -69,6 +70,7 @@ const CommentCard = ({ comment, token, role}) => {
     }
     };
 
+  // Define an asynchronous function to handle comment deletion
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:1234/api/user/comments/${_id}`, {
