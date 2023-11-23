@@ -23,7 +23,7 @@ For authentication and authorization, JSON Web Tokens (JWT) were used by me. JWT
 For the frontend, a front-end framework such as React was used. This frameworks provide a set of tools and libraries for building scalable and efficient web applications. They provide a component-based architecture, making it easy to build reusable and maintainable code.
 
 For styling, Materialize was uesd. This is popular CSS frameworks that provide a set of pre-designed UI components that can be easily customized to match the application's design requirements.
-## features(51 points)：
+## features：
 - [x] Basic features
 - [x] Users can edit their own comments/posts
 - [x] Utilization of a frontside framework, React
