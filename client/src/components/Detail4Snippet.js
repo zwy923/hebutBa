@@ -17,10 +17,27 @@ import CommentCard from './Card4Comment';
 const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role, isLoggedIn}) => {
   const { title, code, tags, createdAt, updatedAt, _id} = snippet;
 
+  const [summary, setSummary] = useState('');
   const [commentCreated, setCommentCreated] = useState(false);
   const [comments, setComments] = useState([]);
   const handleCommentCreated = () => {
     setCommentCreated(true);
+  };
+
+  const handleSummarize = async () => {
+    try {
+      const response = await fetch('/api/user/summarize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: code }),
+      });
+      const data = await response.json();
+      setSummary(data.summary);
+    } catch (error) {
+      console.error('Error summarizing post:', error);
+    }
   };
 
   useEffect(() => {

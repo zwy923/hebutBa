@@ -5,12 +5,34 @@ const User = require('../models/User')
 const Comment = require('../models/Comment');
 const CodeSnippet = require('../models/CodeSnippet');
 const Vote = require('../models/Vote')
-
+const fetch = require('node-fetch');
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
 const validateToken = require("../auth/validateToken.js")
 const { check, validationResult } = require('express-validator')
 process.env.SECRET = 'mysecretkey';
+
+
+const getSummaryFromChatGPT = async (content) => {
+
+  const apiURL = 'YOUR_CHATGPT_API_URL';
+  const apiKey = 'YOUR_API_KEY';
+
+  const response = await fetch(apiURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt: content,
+      max_tokens: 200
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].text;
+};
 
 
 router.get('/private', validateToken, (req, res) => {
@@ -358,6 +380,18 @@ router.get('/votes/count/:id', async (req, res) => {
   res.status(200).json({ count: voteCount });
 });
 
+// ai summarize
 
+router.post('/summarize', validateToken, async (req, res) => {
+  const { content } = req.body;
+
+  try {
+    const summary = await getSummaryFromChatGPT(content);
+    res.json({ summary });
+  } catch (error) {
+    console.error('Error in summarizing:', error);
+    res.status(500).send('Error in summarizing content');
+  }
+});
 
 module.exports = router;
