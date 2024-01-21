@@ -13,11 +13,14 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CreateComment from './CreateComment';
 import CommentCard from './Card4Comment';
+import TypewriterEffect from 'react-typewriter-effect';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role, isLoggedIn}) => {
   const { title, code, tags, createdAt, updatedAt, _id} = snippet;
 
-  const [summary, setSummary] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [gptResponse, setGptResponse] = useState('');
   const [commentCreated, setCommentCreated] = useState(false);
   const [comments, setComments] = useState([]);
   const handleCommentCreated = () => {
@@ -25,8 +28,9 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role
   };
 
   const handleSummarize = async () => {
+    setIsLoading(true);
     try {
-      const response = await fetch('/api/user/summarize', {
+      const response = await fetch('http://localhost:1234/api/user/summarize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,9 +38,11 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role
         body: JSON.stringify({ content: code }),
       });
       const data = await response.json();
-      setSummary(data.summary);
+      setGptResponse(data.summary); 
+      setIsLoading(false);
     } catch (error) {
       console.error('Error summarizing post:', error);
+      setIsLoading(false);
     }
   };
 
@@ -92,6 +98,25 @@ const DetailSnippet = ({ open, handleClose, snippet, name, token, editable, role
         <Typography variant="subtitle1" gutterBottom>Tags:
           <Button size='small' variant="text">{tags}</Button>
         </Typography>
+
+        <Button variant="contained" color="secondary" onClick={handleSummarize}>AI summarize 🪄</Button> 
+        <br/><br/>
+        {isLoading ? (
+          <CircularProgress />
+          ) : (
+        gptResponse && <TypewriterEffect
+          text={gptResponse}
+          cursorColor="#3f51b5"
+          textStyle={{ fontSize: '1.2em' }}
+          startDelay={10}
+          cursor="|"
+          typeSpeed={10}
+          deleteSpeed={10}
+          delaySpeed={10}
+        />
+      )}
+      <br/>
+
         <p>Comment:</p>
           <div>
             {comments.map((comment) => (

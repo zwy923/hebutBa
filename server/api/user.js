@@ -5,18 +5,21 @@ const User = require('../models/User')
 const Comment = require('../models/Comment');
 const CodeSnippet = require('../models/CodeSnippet');
 const Vote = require('../models/Vote')
-const fetch = require('node-fetch');
+let fetch;
+(async () => {
+  fetch = (await import('node-fetch')).default;
+})();
+
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
 const validateToken = require("../auth/validateToken.js")
 const { check, validationResult } = require('express-validator')
 process.env.SECRET = 'mysecretkey';
 
-
 const getSummaryFromChatGPT = async (content) => {
 
-  const apiURL = 'YOUR_CHATGPT_API_URL';
-  const apiKey = 'YOUR_API_KEY';
+  const apiURL = 'https://api.openai.com/v1/chat/completions';
+  const apiKey = '';
 
   const response = await fetch(apiURL, {
     method: 'POST',
@@ -25,13 +28,23 @@ const getSummaryFromChatGPT = async (content) => {
       'Authorization': `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      prompt: content,
-      max_tokens: 200
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: "Please provide a brief summary of the following content.\n"+content}],
+      max_tokens: 250
     })
   });
 
+  console.log('Response status:', response.status);
   const data = await response.json();
-  return data.choices[0].text;
+  console.log('Response data:', data);
+
+  if (!data.choices || data.choices.length === 0) {
+    throw new Error('No summary available');
+  }
+
+  const chatGPTResponse = data.choices[0].message.content;
+  console.log(chatGPTResponse)
+  return chatGPTResponse;
 };
 
 
@@ -382,7 +395,7 @@ router.get('/votes/count/:id', async (req, res) => {
 
 // ai summarize
 
-router.post('/summarize', validateToken, async (req, res) => {
+router.post('/summarize', async (req, res) => {
   const { content } = req.body;
 
   try {
