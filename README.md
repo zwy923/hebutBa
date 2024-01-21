@@ -48,7 +48,7 @@ npm preinstall
 ### Run
 Start the server end in development mode
 ```
-SET NODE_ENV=development& npm run dev:server
+$env:NODE_ENV="development";npm run dev:server
 ```
 then start the front end
 ```

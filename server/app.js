@@ -13,7 +13,7 @@ var apiRouter = require('./api/index')
 var userRouter = require('./api/user')
 
 const mongoose = require("mongoose")
-const mongoDB = "mongodb+srv://zwy923:zhangwenyue@atlascluster.oepjzvv.mongodb.net/test"
+const mongoDB = "mongodb+srv://zwy923:zhangwenyue@hebut.cc4u2x6.mongodb.net/test"
 mongoose.connect(mongoDB)
 mongoose.Promise = Promise
 const db = mongoose.connection
